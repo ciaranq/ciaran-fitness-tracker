@@ -7,7 +7,7 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
 - [x] `[AGY]` **G01: Workspace Hardening** — unpack monorepo tree, data ingest directories, and root configs.
 - [x] `[AGY]` **G02: Ingest Schema Parser & Contracts** — configure Hatchling wheel discovery in `backend/pyproject.toml` and verify Pydantic contracts (`BloodPressureReading`, `SpirometryReading`, `ActivitySummary`) via `uv run --directory backend pytest` (`3 passed`).
 - [x] `[AGY]` **G03: Frontend Skeleton & Tailwind System** — install dependencies via `bun install --cwd frontend` and verify production build via `bun run --cwd frontend build` (`exit 0`).
-- [ ] `[Claude]` **AUDIT_GATE (G02 & G03)** — review git diff, mark `G02` & `G03` as `[COMPLETED]` in `TASK_GRAPH.md`, and promote `G04` & `G05` to `[READY]`.
+- [x] `[Claude]` **AUDIT_GATE (G02 & G03)** — review git diff, mark `G02` & `G03` as `[COMPLETED]` in `TASK_GRAPH.md`, and promote `G04` & `G05` to `[READY]`.
 
 ## Phase 2: Storage Layer & Hot-Folder Ingestion (Issues #2 & #3)
 - [ ] `[Claude]` **G04: DuckDB & SQLite Dual-Store Layer (`backend/engine/db.py`)**
