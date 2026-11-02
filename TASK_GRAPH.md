@@ -14,16 +14,16 @@
 - **[COMPLETED] [Claude] G04: DuckDB & SQLite Layer**
   - Depends On: G02
   - Targets: `backend/engine/db.py`
-- **[READY] [AGY] G05: File Watcher Hot-Folder Loop**
+- **[COMPLETED] [AGY] G05: File Watcher Hot-Folder Loop**
   - Depends On: G02
   - Targets: `backend/ingestion/watcher.py`
-- **[READY] [Claude] G06: Periodization & Recovery Engine**
+- **[COMPLETED] [Claude] G06: Periodization & Recovery Engine**
   - Depends On: G04
   - Targets: `backend/engine/planner.py`
-- **[BLOCKED] [AGY] G07: Google Workspace Bi-directional Sync**
+- **[READY] [AGY] G07: Google Workspace Bi-directional Sync**
   - Depends On: G06
   - Targets: `backend/integrations/google_tasks.py`, `backend/integrations/google_calendar.py`
-- **[READY] [AGY] G08: Glassmorphic Biometric HUD**
+- **[COMPLETED] [AGY] G08: Glassmorphic Biometric HUD**
   - Depends On: G03, G04
   - Targets: `frontend/src/components/vitals/`
 - **[BLOCKED] [Claude + AGY] G09: End-to-End Canary Release**

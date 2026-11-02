@@ -1,5 +1,30 @@
 # HANDOFF.md: Current Agent Execution Context
 
+## 4. Claude Code -> AGY: AUDIT_GATE G05, G06-API, G08, DEPS (2026-11-02)
+**Verdict: PASS with findings.** Independently re-run on commit `d5aca8b`: `uv run --directory backend pytest` -> **76 passed**; `bun run --cwd frontend build` -> **exit 0** (Next 16.4.3, TS 7.0.2, 3/3 static pages). `ruff` still not installed, so the lint gate is unverified (#12).
+- **Graph**: G05, G06, G08 -> `[COMPLETED]`. G07 -> `[READY]` (depends on G06). G09 stays `[BLOCKED]` until G07 completes. G10/G11 stay `[BLOCKED]` on user decisions.
+- **Closed**: #9, #10, #11, #3, #17. **Left open**: #4 (G06, user to close), #6 (G09 still pending), #12, #13, #14.
+
+### Findings (none block the nodes above; fix before G09 / any backend deploy)
+| # | Sev | Finding | Owner |
+|---|---|---|---|
+| 1 | High | **Archive path not gitignored.** `watcher.py` moves ingested BP/spirometry/Garmin files to `data/processed/archive/`; `.gitignore` only covers `*.duckdb`/`*.db`. A `git add .` would commit health data. Needs `data/processed/archive/*` + `!.gitkeep` (and `data/raw/{apple_health,qardio,spirometry,physio}/`). Awaiting user approval (`.gitignore` is cross-cutting). | User approves, then AGY/Claude |
+| 2 | High | **Backend has no auth and CORS is `*` + `allow_credentials=True`** (`backend/main.py`). `POST /api/v1/sessions` writes, `GET` endpoints return vitals. Must be fixed (explicit origins + auth) before any Cloud Run deploy or setting `NEXT_PUBLIC_API_URL` on Vercel. | AGY (`main.py`), design with user |
+| 3 | Med | **Undisclosed deletions**: `bundel.py` and `ciaran-fitness-tracker-init.zip` were deleted in `d5aca8b` and not mentioned in Section 3. Recoverable from git (`5796f38`). **Resolved: user confirmed no restore needed.** AGY must still ask before deleting files. | Closed |
+| 4 | Med | **Watcher error handling**: `IngestHandler.on_created` fires on file creation, before a write finishes, so a partial JSON/CSV raises inside the observer thread; `process_ingest_directory` aborts the whole batch on one bad file; failed files are never quarantined. Add try/except, a settle delay or retry, and a `data/processed/quarantine/` move. | AGY |
+| 5 | Med | **Flare-resolution rule lives in the router.** `GET /plan/rehab` treats the latest log per exercise as the flare state (a clean session clears it). That is a clinical rule, and it is not in `engine/planner.py`, contrary to "do not reimplement the rules". `POST /sessions` evaluates only the single new report, so the two endpoints can disagree. Move into the planner (Claude) and confirm the rule with the clinician (#13). | Claude + clinician |
+| 6 | Med | **DuckDB cross-process locking (G09 risk, not certain)**: `get_db_paths()` calls `init_databases()` on every request, which opens `biometrics.duckdb` read-write (`db.py:95`), while the watcher holds write connections. If they run as separate processes DuckDB will likely refuse concurrent opens. Verify in the G09 E2E run; likely fix is init once at startup. | Claude + AGY |
+| 7 | Low | `POST /sessions` does not validate `exercise_id` against the plan (arbitrary ids written to `session_log`). | AGY |
+| 8 | Low | `httpx` and `pytest` are runtime deps rather than dev deps; pytest warns that `starlette.testclient` + `httpx` is deprecated in favour of `httpx2`. | AGY, needs approval |
+| 9 | Low | Frontend live sync is opt-in via `NEXT_PUBLIC_API_URL`; no `dangerouslySetInnerHTML`, no storage use found. Vercel Authentication is now `all`, so the site is login-gated. Do not set the env var until #2 is fixed. | none |
+
+### Next for AGY
+1. **G07** (Issue #5): Google Tasks/Calendar sync in `backend/integrations/`. Needs Google credentials from the user; do not commit them, `.env*` is ignored. Ask the user for the auth approach before coding.
+2. Fix findings 4 and 7 (AGY scope). Do not touch 1, 2, 3 or 5 until the user decides.
+3. G09 cannot start until G07 is `[COMPLETED]`.
+
+---
+
 ## 0a. AGY: Start Here (Claude Code, 2026-11-02)
 Production deploy is green (Next 16.4.3). Pick up in this order; only `[READY]` graph nodes (AGENTS.md rule 1). Details live in each Issue and in section 2 below.
 1. **Issue #9 (LAUNCH-A)**: read-only rehab plan page from `frontend/src/data/rehab-plan.json`. Vitals tiles are already dummy (`--`); keep them non-personal. The short alias `ciaran-fitness-tracker.vercel.app` is **public**, so only non-personal content may ship. This supersedes the stale `vercel.json` / Root Directory bullet in the LAUNCH A ticket: Root Directory is `frontend`, `frontend/vercel.json` is `{"framework":"nextjs"}`.
