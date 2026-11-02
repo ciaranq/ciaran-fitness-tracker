@@ -41,6 +41,11 @@ _CONTRAINDICATIONS: tuple[tuple[re.Pattern[str], str], ...] = (
 )
 
 
+def contraindication_notices() -> tuple[str, ...]:
+    """Human-readable list of every hard block, for display."""
+    return tuple(reason for _, reason in _CONTRAINDICATIONS)
+
+
 def contraindication_reason(exercise_name: str) -> str | None:
     """Return why an exercise is blocked, or None if it is allowed."""
     for pattern, reason in _CONTRAINDICATIONS:

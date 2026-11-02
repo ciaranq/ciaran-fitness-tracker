@@ -1,0 +1,156 @@
+{
+  "assessed_on": "2026-11-02",
+  "source": "Physio assessment 02 Nov 2026 and Move Health app list",
+  "exercises": [
+    {
+      "id": "squat_green_band",
+      "name": "Squat with band around knees",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Green band around knees, hip-width, push knees out, shallow depth. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "lunge_bodyweight",
+      "name": "Lunge",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Bodyweight to start; progress with weighted backpack. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "crab_walk_band",
+      "name": "Crab walk with band",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Band just above ankles, soft knees. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "calf_raise_double_leg",
+      "name": "Calf raise (double-leg)",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Physio notes: start double-leg. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "calf_raise_single_leg",
+      "name": "Single leg calf raise",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Listed separately in the Move Health app (screenshot 02 Nov 2026); physio notes describe it as a progression once comfortable. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "w_row_band",
+      "name": "W-row with band",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Standing, palms down, floor anchor or door handle, yellow band to start. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "internal_rotation_45",
+      "name": "Internal rotation at 45 degrees",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Standing, elbow at 90 degrees, turn in, yellow band to start. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "external_rotation_band",
+      "name": "External rotation with band",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Standing, yellow band to start. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "lat_pulldown_shoulder_width",
+      "name": "Lat pull-down (shoulder-width grip)",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Multi-gym, shoulder-width grip only; never wide grip. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "standing_press",
+      "name": "Standing press (band or cable)",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Standing, yellow band to start. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "adduction_pulldown_high_anchor",
+      "name": "Adduction pull-down (high anchor)",
+      "sets": 3,
+      "reps": 10,
+      "hold_seconds": null,
+      "notes": "Standing, high anchor, yellow band to start. Default 3x10. Stop if symptoms aggravate and call physio.",
+      "group": "strength"
+    },
+    {
+      "id": "stretch_hamstring_left",
+      "name": "Hamstring stretch (left)",
+      "sets": 2,
+      "reps": null,
+      "hold_seconds": 30,
+      "notes": "Hold 20-30s. Lying on back, towel around foot, knee straight. Left tighter (75-80 deg).",
+      "group": "stretch"
+    },
+    {
+      "id": "stretch_hamstring_right",
+      "name": "Hamstring stretch (right)",
+      "sets": 1,
+      "reps": null,
+      "hold_seconds": 30,
+      "notes": "Hold 20-30s. Lying on back, towel around foot, knee straight.",
+      "group": "stretch"
+    },
+    {
+      "id": "stretch_calf_achilles_right",
+      "name": "Calf / Achilles stretch (right)",
+      "sets": 2,
+      "reps": null,
+      "hold_seconds": 30,
+      "notes": "PRIORITY: right calf tightness likely driving posterior right knee stiffness. ASSUMPTION: physio gave no sets/hold; 2 x 30s mirrors the other stretches. Confirm at the 2-week follow-up.",
+      "group": "stretch"
+    },
+    {
+      "id": "stretch_glute_figure4_left",
+      "name": "Glute stretch, figure-4 (left)",
+      "sets": 2,
+      "reps": null,
+      "hold_seconds": 30,
+      "notes": "Hold 20-30s. Left glute tight; sciatica-like symptoms reported.",
+      "group": "stretch"
+    },
+    {
+      "id": "stretch_glute_figure4_right",
+      "name": "Glute stretch, figure-4 (right)",
+      "sets": 2,
+      "reps": null,
+      "hold_seconds": 30,
+      "notes": "Hold 20-30s.",
+      "group": "stretch"
+    }
+  ],
+  "contraindications": [
+    "Seated knee extension machine is contraindicated (physio, 02 Nov 2026).",
+    "Wide-grip lat pull-down is contraindicated; shoulder-width grip only.",
+    "Deep knee flexion under load is contraindicated; keep squats shallow."
+  ],
+  "stop_rule": "Stop any exercise that aggravates your right knee (back of the knee), left glute/sciatic symptoms or shoulders, and call your clinician (Move Health) rather than waiting for the follow-up."
+}
