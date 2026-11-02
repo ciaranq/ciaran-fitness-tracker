@@ -1,18 +1,34 @@
-import { HeartPulse, Activity, Wind, ShieldCheck } from "lucide-react";
+import { RehabPlanView } from "@/components/RehabPlanView";
+import { VitalsHud } from "@/components/vitals/VitalsHud";
+import rehabPlanData from "@/data/rehab-plan.json";
+
 export default function Home() {
+  const exerciseOptions = rehabPlanData.exercises.map((ex) => ({
+    id: ex.id,
+    name: ex.name,
+  }));
+
   return (
-    <main className="max-w-6xl mx-auto px-6 py-12">
-      <header className="mb-10 border-b border-slate-800 pb-8">
-        <span className="text-xs uppercase font-semibold text-cyan-400 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/40">Cardio-Pulmonary Engine</span>
-        <h1 className="text-4xl font-extrabold text-white mt-3">Ciaran Fitness Tracker</h1>
-        <p className="text-slate-400 mt-1 text-sm">6-Month Aerobic Baseline & Adaptive Physio Progression</p>
+    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+      <header className="mb-8 border-b border-slate-800/80 pb-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full border border-cyan-800/40 bg-cyan-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-cyan-400">
+            Cardio-Pulmonary &amp; Rehab Engine
+          </span>
+          <span className="rounded-full border border-slate-700/60 bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-300">
+            Move Health Protocol
+          </span>
+        </div>
+        <h1 className="fluid-title mt-3 font-extrabold tracking-tight text-white">
+          Ciaran Fitness Tracker
+        </h1>
+        <p className="mt-1.5 text-sm text-slate-400 sm:text-base">
+          6-Month Aerobic Baseline &amp; Adaptive Physiotherapy Progression
+        </p>
       </header>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="glass-panel p-5 rounded-2xl"><div className="flex justify-between text-slate-400"><span className="text-xs uppercase font-medium">Resting HR</span><HeartPulse className="h-4 w-4 text-rose-400" /></div><div className="text-3xl font-bold mt-2 text-white">-- <span className="text-xs text-slate-400">bpm</span></div></div>
-        <div className="glass-panel p-5 rounded-2xl"><div className="flex justify-between text-slate-400"><span className="text-xs uppercase font-medium">Blood Pressure</span><Activity className="h-4 w-4 text-cyan-400" /></div><div className="text-3xl font-bold mt-2 text-white">--/-- <span className="text-xs text-slate-400">mmHg</span></div></div>
-        <div className="glass-panel p-5 rounded-2xl"><div className="flex justify-between text-slate-400"><span className="text-xs uppercase font-medium">Peak Flow</span><Wind className="h-4 w-4 text-emerald-400" /></div><div className="text-3xl font-bold mt-2 text-white">--- <span className="text-xs text-slate-400">L/min</span></div></div>
-        <div className="glass-panel p-5 rounded-2xl"><div className="flex justify-between text-slate-400"><span className="text-xs uppercase font-medium">Status</span><ShieldCheck className="h-4 w-4 text-amber-400" /></div><div className="text-xl font-bold mt-2 text-white">Month 1 <span className="text-xs text-slate-400">Base Build</span></div></div>
-      </div>
+
+      <VitalsHud exercises={exerciseOptions} />
+      <RehabPlanView />
     </main>
   );
 }

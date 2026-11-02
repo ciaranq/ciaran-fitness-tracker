@@ -14,24 +14,24 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
   - [x] `[Claude]` Verify/harden `biometrics.duckdb` (`vitals_log`, `activity_summary`) and `app_state.db` (`physio_plans`, `sync_tracking`).
   - [x] `[Claude]` Seed `physio_plans` with the Nov 2, 2026 clinical rehab & asymmetric stretching protocol from `data/physio/physio-notes1.md`.
   - [x] `[Claude]` Add database initialization & seeding tests (`uv run --directory backend pytest`).
-- [ ] `[AGY]` **G05: File Watcher Hot-Folder Loop (`backend/ingestion/watcher.py`)**
-  - [ ] `[AGY]` Route incoming files in `data/raw/ingest/` (Garmin FIT/JSON, QardioArm BP, Spirometer Peak Flow, Apple Health, Physio notes) through `backend/ingestion/contracts.py`.
-  - [ ] `[AGY]` Persist validated records to `biometrics.duckdb` / `app_state.db` and archive raw files to `data/processed/archive/`.
-  - [ ] `[AGY]` Add end-to-end watcher ingest tests (`uv run --directory backend pytest`).
+- [x] `[AGY]` **G05: File Watcher Hot-Folder Loop (`backend/ingestion/watcher.py`)**
+  - [x] `[AGY]` Route incoming files in `data/raw/ingest/` (Garmin FIT/JSON, QardioArm BP, Spirometer Peak Flow, Apple Health, Physio notes) through `backend/ingestion/contracts.py`.
+  - [x] `[AGY]` Persist validated records to `biometrics.duckdb` / `app_state.db` and archive raw files to `data/processed/archive/`.
+  - [x] `[AGY]` Add end-to-end watcher ingest tests (`uv run --directory backend pytest`).
 
 ## Phase 3: Clinical Periodization & Google Sync (Issues #4 & #5)
-- [ ] `[Claude]` **G06: Periodization & Recovery Engine (`backend/engine/planner.py`)**
+- [x] `[Claude]` **G06: Periodization & Recovery Engine (`backend/engine/planner.py`)**
   - [x] `[Claude]` Implement 6-month Zone 2 aerobic base progression balanced with 3x10 standing band strength blocks.
   - [x] `[Claude]` Enforce clinical contraindications (block seated knee extension & wide-grip lat pull-downs) and symptom-flare circuit breakers.
-  - [ ] `[Claude]` Expose FastAPI router endpoints for vitals summary, rehab protocol, and progression state.
+  - [x] `[AGY]` Expose FastAPI router endpoints (`backend/routers/plan.py`) for vitals summary, rehab protocol, session logging, and progression state (Issue #10).
 - [ ] `[AGY]` **G07: Google Workspace Bi-Directional Sync (`backend/integrations/`)**
   - [ ] `[AGY]` Implement `google_tasks.py` for daily rehab exercise & asymmetric stretch checklists.
   - [ ] `[AGY]` Implement `google_calendar.py` for Zone 2 sessions, strength blocks, and the 2-week physio follow-up checkpoint.
   - [ ] `[AGY]` Reconcile sync state in `app_state.db` (`sync_tracking`).
 
 ## Phase 4: Biometric HUD & Canary Release (Issue #6)
-- [ ] `[AGY]` **G08: Glassmorphic Biometric HUD (`frontend/src/components/vitals/`)**
-  - [ ] `[AGY]` Build interactive vitals cards, Zone 2 progress visuals, and daily physio/stretching adherence panels wired to FastAPI.
+- [x] `[AGY]` **G08: Glassmorphic Biometric HUD (`frontend/src/components/vitals/`)**
+  - [x] `[AGY]` Build interactive vitals cards, Zone 2 progress visuals, and daily physio/stretching adherence panels wired to FastAPI (`VitalsHud.tsx`, `RehabPlanView.tsx`).
 - [ ] `[Claude]` `[AGY]` **G09: End-to-End Canary Release**
   - [ ] `[AGY]` Run full frontend production build (`bun run --cwd frontend build`) and E2E verification.
   - [ ] `[Claude]` Perform final `AUDIT_GATE` security, schema, and regression review.

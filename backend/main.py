@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from routers.plan import router as plan_router
+
 app = FastAPI(title="Ciaran Fitness Tracker API", version="1.0.0")
 
 app.add_middleware(
@@ -11,15 +13,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(plan_router)
+
+
 @app.get("/api/health")
 def health():
-    return {"status": "healthy", "engine": "FastAPI + UV (Python 3.12)"}
-
-@app.get("/api/v1/baseline/summary")
-def baseline_summary():
-    return {
-        "resting_heart_rate": 58,
-        "blood_pressure": {"systolic": 118, "diastolic": 76},
-        "peak_expiratory_flow_l_min": 520,
-        "phase": "Base Conditioning (Month 1)"
-    }
+    return {"status": "healthy", "engine": "FastAPI + UV (Python 3.13+)"}
