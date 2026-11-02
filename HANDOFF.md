@@ -1,5 +1,13 @@
 # HANDOFF.md: Current Agent Execution Context
 
+## 0. Security/Stack Upgrade (Claude Code, 2026-11-02) — touches AGY scope `frontend/`
+- Vercel blocked deploys: `Vulnerable version of Next.js detected` (was `next@15.0.3`).
+- `frontend/`: `next` 16.4.3, `react`/`react-dom` 19.3.1, `@types/node` 24, `@types/react*` 19.3. Next auto-edited `tsconfig.json` (`jsx: react-jsx`, extra `include`) and `next-env.d.ts`. Do not revert.
+- `backend/`: `requires-python >=3.13`.
+- Vercel project: Root Directory `frontend`; `vercel.json` moved to `frontend/vercel.json`; stale build/output overrides cleared.
+- Verified: `bun run --cwd frontend build` clean (Turbopack, 3/3 static pages); `uv run --directory backend pytest` -> 63 passed. `ruff` still not a dependency (#12).
+- Deferred majors (Tailwind 4, TS 7, lucide 1.x, tailwind-merge 3): Issue #17.
+
 ## 1. Latest Completed Turn (Claude Code) — AUDIT_GATE G02 & G03 (Issue #7)
 - **Independently re-verified**:
   - `uv run --directory backend pytest` -> **`3 passed`**.
