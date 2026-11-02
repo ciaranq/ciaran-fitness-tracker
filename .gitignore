@@ -1,0 +1,13 @@
+node_modules/
+.next/
+__pycache__/
+*.py[cod]
+.venv/
+.env*
+.DS_Store
+data/raw/ingest/*
+!data/raw/ingest/.gitkeep
+data/raw/garmin/*/*
+!data/raw/garmin/*/.gitkeep
+data/processed/*.duckdb
+data/processed/*.db
