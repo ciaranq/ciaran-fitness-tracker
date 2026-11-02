@@ -22,7 +22,7 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
 ## Phase 3: Clinical Periodization & Google Sync (Issues #4 & #5)
 - [ ] `[Claude]` **G06: Periodization & Recovery Engine (`backend/engine/planner.py`)**
   - [ ] `[Claude]` Implement 6-month Zone 2 aerobic base progression balanced with 3x10 standing band strength blocks.
-  - [ ] `[Claude]` Enforce clinical contraindications (block seated knee extension & wide-grip lat pull-downs) and symptom-flare circuit breakers.
+  - [x] `[Claude]` Enforce clinical contraindications (block seated knee extension & wide-grip lat pull-downs) and symptom-flare circuit breakers.
   - [ ] `[Claude]` Expose FastAPI router endpoints for vitals summary, rehab protocol, and progression state.
 - [ ] `[AGY]` **G07: Google Workspace Bi-Directional Sync (`backend/integrations/`)**
   - [ ] `[AGY]` Implement `google_tasks.py` for daily rehab exercise & asymmetric stretch checklists.

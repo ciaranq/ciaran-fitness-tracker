@@ -28,5 +28,6 @@
 - G08 `frontend/src/components/vitals/`: READY; backend endpoints do not exist yet (G06 router ticket to follow).
 - Do not edit `backend/engine/`.
 
-### Claude Code -> G06 (Issue #4)
-- `backend/engine/planner.py` + `backend/tests/test_planner.py`, then router ticket for AGY.
+### Claude Code -> G06 (Issue #4), in progress
+- Step 1 DONE (35 tests pass): `backend/engine/planner.py` safety core: `contraindication_reason`, `filter_safe`, `evaluate_symptoms` -> `FlareDecision` (`CLEAR`/`STOP_AND_REVIEW`), `active_exercises`, `load_plan`. Tests in `backend/tests/test_planner.py`.
+- Step 2: rehab progression (3x10, yellow band, double -> single-leg). Step 3: 6-month Zone 2 periodization gated by vitals. Then router ticket for AGY.
