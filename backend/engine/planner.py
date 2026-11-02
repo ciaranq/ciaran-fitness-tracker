@@ -8,6 +8,7 @@ import re
 import sqlite3
 from contextlib import closing
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
 from pathlib import Path
 
@@ -116,7 +117,83 @@ def active_exercises(exercises: list[Exercise], decision: FlareDecision) -> list
     return [e for e in exercises if e.id not in decision.halted_exercise_ids]
 
 
-# --- DB loader ---------------------------------------------------------------
+# --- progression (suggest only; the clinician confirms) ----------------------
+
+# Physio gave no number for "when comfortable". Default pending the 2-week follow-up.
+CLEAN_SESSIONS_TO_PROGRESS = 6
+
+_BAND_GRIP = "Shift your grip on the band to increase resistance."
+_PROGRESSIONS: dict[str, str] = {
+    "lunge_bodyweight": "Add a weighted backpack.",
+    "crab_walk_band": _BAND_GRIP,
+    "w_row_band": _BAND_GRIP,
+    "internal_rotation_45": _BAND_GRIP,
+    "external_rotation_band": _BAND_GRIP,
+    "standing_press": _BAND_GRIP,
+    "adduction_pulldown_high_anchor": _BAND_GRIP,
+}
+
+
+@dataclass(frozen=True)
+class SessionLog:
+    exercise_id: str
+    performed_at: datetime
+    symptom: Symptom | None = None
+
+
+@dataclass(frozen=True)
+class ProgressionSuggestion:
+    exercise_id: str
+    suggestion: str
+    clean_sessions: int
+    message: str
+
+
+def _clean_streak(exercise_id: str, logs: list[SessionLog]) -> int:
+    """Consecutive symptom-free sessions, newest first, until a symptom."""
+    streak = 0
+    for log in sorted((l for l in logs if l.exercise_id == exercise_id),
+                      key=lambda l: l.performed_at, reverse=True):
+        if log.symptom is not None:
+            break
+        streak += 1
+    return streak
+
+
+def progression_suggestions(
+    exercises: list[Exercise], logs: list[SessionLog]
+) -> list[ProgressionSuggestion]:
+    """Flag exercises eligible to progress. Never edits the plan: clinician decides."""
+    out: list[ProgressionSuggestion] = []
+    safe, _ = filter_safe(exercises)
+    for e in safe:
+        step = _PROGRESSIONS.get(e.id)
+        if step is None:
+            continue
+        streak = _clean_streak(e.id, logs)
+        if streak >= CLEAN_SESSIONS_TO_PROGRESS:
+            out.append(ProgressionSuggestion(
+                exercise_id=e.id,
+                suggestion=step,
+                clean_sessions=streak,
+                message=f"{e.name}: {streak} symptom-free sessions. {step} "
+                        "Confirm with your clinician before changing the prescription.",
+            ))
+    return out
+
+
+# --- DB loaders --------------------------------------------------------------
+
+def load_session_logs(sqlite_path: Path = SQLITE_PATH) -> list[SessionLog]:
+    with closing(sqlite3.connect(sqlite_path)) as conn:
+        rows = conn.execute(
+            "SELECT exercise_id, performed_at, symptom FROM session_log ORDER BY performed_at, id"
+        ).fetchall()
+    return [
+        SessionLog(r[0], datetime.fromisoformat(r[1]), Symptom(r[2]) if r[2] else None)
+        for r in rows
+    ]
+
 
 def load_plan(sqlite_path: Path = SQLITE_PATH) -> list[Exercise]:
     """Load physio_plans and drop any contraindicated row (defence in depth)."""

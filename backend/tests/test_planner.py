@@ -1,18 +1,23 @@
 import sqlite3
+from datetime import datetime, timedelta
 
 import pytest
 
 from engine.db import init_databases
 from engine.planner import (
+    CLEAN_SESSIONS_TO_PROGRESS,
     Exercise,
     FlareState,
     Symptom,
+    SessionLog,
     SymptomReport,
     active_exercises,
     contraindication_reason,
     evaluate_symptoms,
     filter_safe,
     load_plan,
+    load_session_logs,
+    progression_suggestions,
 )
 
 
@@ -114,3 +119,80 @@ def test_load_plan_drops_contraindicated_rows_added_to_db(tmp_path):
     plan = load_plan(sqlite_path)
     assert "bad" not in {e.id for e in plan}
     assert len(plan) == 16
+
+
+# --- progression (suggest only) ----------------------------------------------
+
+T0 = datetime(2026, 11, 3, 8, 0)
+
+
+def logs(exercise_id: str, symptoms: list[Symptom | None]) -> list[SessionLog]:
+    return [SessionLog(exercise_id, T0 + timedelta(days=i), sym) for i, sym in enumerate(symptoms)]
+
+
+LUNGE = Exercise("lunge_bodyweight", "Lunge", 3, 10)
+
+
+def test_threshold_is_six():
+    assert CLEAN_SESSIONS_TO_PROGRESS == 6
+
+
+def test_six_clean_sessions_suggests_progression_for_clinician():
+    out = progression_suggestions([LUNGE], logs("lunge_bodyweight", [None] * 6))
+    assert len(out) == 1
+    assert out[0].exercise_id == "lunge_bodyweight"
+    assert "backpack" in out[0].suggestion.lower()
+    assert out[0].clean_sessions == 6
+    assert "clinician" in out[0].message.lower()
+
+
+def test_five_clean_sessions_is_not_enough():
+    assert progression_suggestions([LUNGE], logs("lunge_bodyweight", [None] * 5)) == []
+
+
+def test_symptom_resets_streak():
+    seq = [None] * 6 + [Symptom.POSTERIOR_RIGHT_KNEE] + [None] * 5
+    assert progression_suggestions([LUNGE], logs("lunge_bodyweight", seq)) == []
+
+
+def test_streak_counts_only_after_last_symptom():
+    seq = [Symptom.SHOULDER_PAIN] + [None] * 6
+    out = progression_suggestions([LUNGE], logs("lunge_bodyweight", seq))
+    assert out[0].clean_sessions == 6
+
+
+def test_log_order_does_not_matter():
+    seq = logs("lunge_bodyweight", [None] * 6)
+    assert len(progression_suggestions([LUNGE], list(reversed(seq)))) == 1
+
+
+def test_other_exercises_logs_are_ignored():
+    assert progression_suggestions([LUNGE], logs("w_row_band", [None] * 6)) == []
+
+
+def test_band_exercise_suggests_grip_change():
+    row = Exercise("w_row_band", "W-row with band", 3, 10)
+    out = progression_suggestions([row], logs("w_row_band", [None] * 6))
+    assert "grip" in out[0].suggestion.lower()
+
+
+def test_exercise_without_known_progression_is_never_suggested():
+    stretch = Exercise("stretch_hamstring_left", "Hamstring stretch (left)", 2, None, 30)
+    assert progression_suggestions([stretch], logs("stretch_hamstring_left", [None] * 10)) == []
+
+
+def test_contraindicated_exercise_never_suggested():
+    bad = Exercise("lunge_bodyweight", "Deep full squat", 3, 10)
+    assert progression_suggestions([bad], logs("lunge_bodyweight", [None] * 6)) == []
+
+
+def test_load_session_logs_roundtrip(tmp_path):
+    _, sqlite_path = init_databases(tmp_path)
+    with sqlite3.connect(sqlite_path) as conn:
+        conn.execute("INSERT INTO session_log (exercise_id, performed_at, symptom) VALUES ('lunge_bodyweight', '2026-11-03 08:00:00', NULL)")
+        conn.execute("INSERT INTO session_log (exercise_id, performed_at, symptom) VALUES ('lunge_bodyweight', '2026-11-04 08:00:00', 'shoulder_pain')")
+    got = load_session_logs(sqlite_path)
+    assert got == [
+        SessionLog("lunge_bodyweight", datetime(2026, 11, 3, 8, 0), None),
+        SessionLog("lunge_bodyweight", datetime(2026, 11, 4, 8, 0), Symptom.SHOULDER_PAIN),
+    ]

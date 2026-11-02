@@ -30,4 +30,5 @@
 
 ### Claude Code -> G06 (Issue #4), in progress
 - Step 1 DONE (35 tests pass): `backend/engine/planner.py` safety core: `contraindication_reason`, `filter_safe`, `evaluate_symptoms` -> `FlareDecision` (`CLEAR`/`STOP_AND_REVIEW`), `active_exercises`, `load_plan`. Tests in `backend/tests/test_planner.py`.
-- Step 2: rehab progression (3x10, yellow band, double -> single-leg). Step 3: 6-month Zone 2 periodization gated by vitals. Then router ticket for AGY.
+- Step 2 DONE (46 tests pass): suggest-only progression. New `session_log` table in `app_state.db` (`exercise_id`, `performed_at`, `symptom` NULL = clean). `progression_suggestions()` flags an exercise after `CLEAN_SESSIONS_TO_PROGRESS = 6` consecutive symptom-free sessions (assumed default, physio gave no number); a symptom resets the streak; planner never edits `physio_plans`. `load_session_logs()` reads it. AGY router must write `session_log` rows (`symptom` in `posterior_right_knee|left_sciatic_radiation|shoulder_pain`).
+- Step 3: 6-month Zone 2 periodization gated by vitals. Then router ticket for AGY.

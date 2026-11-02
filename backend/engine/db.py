@@ -84,6 +84,12 @@ def init_databases(processed_dir: Path = PROCESSED_DIR) -> tuple[Path, Path]:
             id TEXT PRIMARY KEY, provider TEXT NOT NULL, external_id TEXT NOT NULL,
             item_type TEXT, status TEXT, synced_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE (provider, external_id))""")
+        # symptom: NULL = clean session, else a planner.Symptom value.
+        conn.execute("""CREATE TABLE IF NOT EXISTS session_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, exercise_id TEXT NOT NULL,
+            performed_at TIMESTAMP NOT NULL, symptom TEXT)""")
+        conn.execute("""CREATE INDEX IF NOT EXISTS idx_session_log_exercise
+            ON session_log (exercise_id, performed_at)""")
     seed_physio_plans(sqlite_path)
 
     with closing(duckdb.connect(str(duck_path))) as con:
