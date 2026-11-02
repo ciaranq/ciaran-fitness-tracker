@@ -10,10 +10,10 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
 - [x] `[Claude]` **AUDIT_GATE (G02 & G03)** — review git diff, mark `G02` & `G03` as `[COMPLETED]` in `TASK_GRAPH.md`, and promote `G04` & `G05` to `[READY]`.
 
 ## Phase 2: Storage Layer & Hot-Folder Ingestion (Issues #2 & #3)
-- [ ] `[Claude]` **G04: DuckDB & SQLite Dual-Store Layer (`backend/engine/db.py`)**
-  - [ ] `[Claude]` Verify/harden `biometrics.duckdb` (`vitals_log`, `activity_summary`) and `app_state.db` (`physio_plans`, `sync_tracking`).
-  - [ ] `[Claude]` Seed `physio_plans` with the Nov 2, 2026 clinical rehab & asymmetric stretching protocol from `data/physio/physio-notes1.md`.
-  - [ ] `[Claude]` Add database initialization & seeding tests (`uv run --directory backend pytest`).
+- [x] `[Claude]` **G04: DuckDB & SQLite Dual-Store Layer (`backend/engine/db.py`)**
+  - [x] `[Claude]` Verify/harden `biometrics.duckdb` (`vitals_log`, `activity_summary`) and `app_state.db` (`physio_plans`, `sync_tracking`).
+  - [x] `[Claude]` Seed `physio_plans` with the Nov 2, 2026 clinical rehab & asymmetric stretching protocol from `data/physio/physio-notes1.md`.
+  - [x] `[Claude]` Add database initialization & seeding tests (`uv run --directory backend pytest`).
 - [ ] `[AGY]` **G05: File Watcher Hot-Folder Loop (`backend/ingestion/watcher.py`)**
   - [ ] `[AGY]` Route incoming files in `data/raw/ingest/` (Garmin FIT/JSON, QardioArm BP, Spirometer Peak Flow, Apple Health, Physio notes) through `backend/ingestion/contracts.py`.
   - [ ] `[AGY]` Persist validated records to `biometrics.duckdb` / `app_state.db` and archive raw files to `data/processed/archive/`.

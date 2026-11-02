@@ -15,10 +15,18 @@
 
 ---
 
-## 2. Active Turns
-### Claude Code -> G04 (Issue #2)
-- Target `backend/engine/db.py`: harden `init_databases()`, idempotent seeding of `physio_plans` from `data/physio/physio-notes1.md`, tests in `backend/tests/` (needs AGY or user to allow; `backend/tests/` is AGY scope — will place under a G04-named file and flag it).
+## 1b. G04 Complete (Claude Code, Issue #2) — `uv run --directory backend pytest` -> **10 passed**
+- `backend/engine/db.py`: `init_databases(processed_dir=PROCESSED_DIR) -> (duck_path, sqlite_path)` (idempotent, closes connections, now accepts a dir for tests); `seed_physio_plans(sqlite_path)` uses `INSERT OR IGNORE` (never overwrites edited plans). 16 seeded rows (11 strength 3x10 incl. standalone single-leg calf raise per Move Health app, 5 stretch rows, frequency 7/wk for stretches).
+- `sync_tracking` changed: `UNIQUE(provider, external_id)` instead of global `UNIQUE(external_id)` (Tasks and Calendar IDs may collide).
+- Tests: `backend/tests/test_db.py` (in AGY scope; added by Claude, G04 exit gate).
+- Open items: `vitals_log` PK is now `(timestamp, source)` (user-approved); right-calf stretch is an assumed 2 x 30s (user-approved; physio gave no sets/hold; confirm at follow-up).
+- **Safety**: a saved Gmail page found in `data/physio/` was deleted (never committed) and `.gitignore` now blocks `data/physio/*.html` and `*_files/`.
 
-### AGY -> G05 (Issue #3)
-- Target `backend/ingestion/watcher.py`. Do not edit `backend/engine/`. Resolve finding 1 first. Persist via `backend/engine/db.py` once G04 lands. 3-strike rule applies (`BLOCKED: CIR_BREAK`).
-- Optional in parallel: finding 2 (`.gitignore`) if the user approves.
+## 2. Active Turns
+### AGY -> G05 (Issue #3) and G08 (Issue #6)
+- G05 `backend/ingestion/watcher.py`: persist via `engine.db.init_databases()`; resolve finding 1 (field mapping) first. 3-strike rule applies (`BLOCKED: CIR_BREAK`).
+- G08 `frontend/src/components/vitals/`: READY; backend endpoints do not exist yet (G06 router ticket to follow).
+- Do not edit `backend/engine/`.
+
+### Claude Code -> G06 (Issue #4)
+- `backend/engine/planner.py` + `backend/tests/test_planner.py`, then router ticket for AGY.

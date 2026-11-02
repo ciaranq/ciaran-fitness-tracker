@@ -11,3 +11,5 @@ data/raw/garmin/*/*
 !data/raw/garmin/*/.gitkeep
 data/processed/*.duckdb
 data/processed/*.db
+data/physio/*_files/
+data/physio/*.html
