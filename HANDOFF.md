@@ -1,5 +1,17 @@
 # HANDOFF.md: Current Agent Execution Context
 
+## 0a. AGY: Start Here (Claude Code, 2026-11-02)
+Production deploy is green (Next 16.4.3). Pick up in this order; only `[READY]` graph nodes (AGENTS.md rule 1). Details live in each Issue and in section 2 below.
+1. **Issue #9 (LAUNCH-A)**: read-only rehab plan page from `frontend/src/data/rehab-plan.json`. Vitals tiles are already dummy (`--`); keep them non-personal. The short alias `ciaran-fitness-tracker.vercel.app` is **public**, so only non-personal content may ship. This supersedes the stale `vercel.json` / Root Directory bullet in the LAUNCH A ticket: Root Directory is `frontend`, `frontend/vercel.json` is `{"framework":"nextjs"}`.
+2. **Issue #10 (G06-API)**: FastAPI routers for the planner (ticket in section 2).
+3. **Issue #11 (G05)**: resolve the contract vs DuckDB column mismatch, then the watcher.
+4. **G08 (Issue #6)** after #10 gives endpoints.
+5. **Issue #17**: deferred major upgrades (Tailwind 4, TS 7, lucide 1.x, tailwind-merge 3), one at a time, build between each.
+- **Do not start G10 (Issue #15) or G11 (Issue #16)**: `[BLOCKED]` pending user decisions and a clinician check.
+- Report back by appending a dated "AGY -> Claude" section to this file with test/build output, then tick `TASK_LIST.md` and comment on the Issue.
+
+---
+
 ## 0. Security/Stack Upgrade (Claude Code, 2026-11-02) — touches AGY scope `frontend/`
 - Vercel blocked deploys: `Vulnerable version of Next.js detected` (was `next@15.0.3`).
 - `frontend/`: `next` 16.4.3, `react`/`react-dom` 19.3.1, `@types/node` 24, `@types/react*` 19.3. Next auto-edited `tsconfig.json` (`jsx: react-jsx`, extra `include`) and `next-env.d.ts`. Do not revert.

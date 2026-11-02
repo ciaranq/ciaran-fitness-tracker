@@ -35,3 +35,11 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
 - [ ] `[Claude]` `[AGY]` **G09: End-to-End Canary Release**
   - [ ] `[AGY]` Run full frontend production build (`bun run --cwd frontend build`) and E2E verification.
   - [ ] `[Claude]` Perform final `AUDIT_GATE` security, schema, and regression review.
+
+## Phase 5: Nutrition, Supplements & Sauna (Issues #15 & #16)
+- [ ] `[Claude]` `[AGY]` **G10: Nutrition & Supplements** — BLOCKED until Issue #15 open questions are approved.
+  - [ ] `[Claude]` Schema (SQLite mutable + DuckDB mirror), ingest contract, planner adherence input.
+  - [ ] `[AGY]` Logging router + HUD entry form + daily supplement checklist.
+- [ ] `[Claude]` `[AGY]` **G11: Sauna** — BLOCKED until Issue #16 open questions are answered (clinician check, Issue #13).
+  - [ ] `[Claude]` `sauna_session` schema, planner safety rule (flare / vitals-hold gating).
+  - [ ] `[AGY]` Logging router + HUD entry form.

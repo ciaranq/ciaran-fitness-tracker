@@ -28,3 +28,11 @@
   - Targets: `frontend/src/components/vitals/`
 - **[BLOCKED] [Claude + AGY] G09: End-to-End Canary Release**
   - Depends On: G07, G08
+- **[BLOCKED] [Claude + AGY] G10: Nutrition & Supplements (plan input + logging)**
+  - Depends On: G04, G06 (also G05 if file/CSV ingest is chosen). Unblocks when the Issue #15 open questions and schema are user-approved.
+  - Targets: `backend/engine/` (schema, planner input), `backend/ingestion/` (contract), `backend/routers/`, `frontend/src/components/`
+  - Exit Gate: approved schema + ingest contract; planner reads adherence without changing safety-core behaviour; pytest + ruff clean; logging verified into DuckDB.
+- **[BLOCKED] [Claude + AGY] G11: Sauna (recovery component + session logging)**
+  - Depends On: G04, G06. Unblocks when the Issue #16 open questions are answered (clinician confirmation of heat-exposure constraints, see Issue #13).
+  - Targets: `backend/engine/` (schema, safety rule), `backend/routers/`, `frontend/src/components/`
+  - Exit Gate: approved schema; sauna suggestions gated by flare breaker and vitals hold; pytest + ruff clean; logging verified into DuckDB.
