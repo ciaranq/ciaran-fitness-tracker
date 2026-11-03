@@ -36,3 +36,8 @@
   - Depends On: G04, G06. Unblocks when the Issue #16 open questions are answered (clinician confirmation of heat-exposure constraints, see Issue #13).
   - Targets: `backend/engine/` (schema, safety rule), `backend/routers/`, `frontend/src/components/`
   - Exit Gate: approved schema; sauna suggestions gated by flare breaker and vitals hold; pytest + ruff clean; logging verified into DuckDB.
+- **[READY] [Claude + AGY] G12: Recovery Session Runner (offline workout walkthrough)**
+  - Depends On: G05, G08. Step 1 inside the node is the watcher partial-file/quarantine fix (audit finding 4); nothing ships before it.
+  - Design: `docs/superpowers/specs/2026-11-04-recovery-session-runner-design.md` (approved 2026-11-04). Issue #18.
+  - Targets: `backend/engine/db.py` (`set_log`, Claude), `backend/ingestion/` (contract + watcher branch, AGY), `frontend/src/app/recovery/`, `frontend/src/components/recovery/` (AGY)
+  - Exit Gate: airplane-mode run of both physio routines; export, drop, ingest is idempotent; pytest + frontend build pass.

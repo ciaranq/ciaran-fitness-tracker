@@ -43,3 +43,11 @@ Synchronized with `TASK_GRAPH.md` and GitHub Issues (`#1`–`#6`). Every task ca
 - [ ] `[Claude]` `[AGY]` **G11: Sauna** — BLOCKED until Issue #16 open questions are answered (clinician check, Issue #13).
   - [ ] `[Claude]` `sauna_session` schema, planner safety rule (flare / vitals-hold gating).
   - [ ] `[AGY]` Logging router + HUD entry form.
+
+## Phase 6: Recovery Session Runner (Issue #18)
+- [ ] `[Claude]` `[AGY]` **G12: Recovery Session Runner** — design: `docs/superpowers/specs/2026-11-04-recovery-session-runner-design.md`
+  - [ ] `[AGY]` Step 1: watcher hardening (settle delay/retry, quarantine folder, per-file error handling).
+  - [ ] `[Claude]` `set_log` table + idempotent insert + `session_log` derivation, with tests.
+  - [ ] `[AGY]` `workout_session` contract + watcher branch writing `set_log`/`session_log`.
+  - [ ] `[AGY]` Early on-phone spike: install as PWA, service worker under Vercel Authentication, speech, wake lock.
+  - [ ] `[AGY]` Routine runner UI (`physio_strength`, `physio_stretches`), IndexedDB per-set logging, pause/resume/skip/symptom stop, export file.

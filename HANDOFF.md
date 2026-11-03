@@ -1,5 +1,15 @@
 # HANDOFF.md: Current Agent Execution Context
 
+## 5. AGY: G12 Recovery Session Runner (Claude Code, 2026-11-04)
+Design approved: `docs/superpowers/specs/2026-11-04-recovery-session-runner-design.md`. Issue #18. Read it fully; it is the contract.
+- **Order**: (1) watcher hardening (audit finding 4), (2) wait for Claude's `set_log` table in `backend/engine/db.py` (do not edit `engine/`), (3) `workout_session` contract + watcher branch, (4) **on-phone spike before building the UI**: PWA install, service worker under Vercel Authentication, `speechSynthesis`, Wake Lock, (5) runner UI + IndexedDB + export.
+- **Two routines**: `physio_strength` (11) and `physio_stretches` (5), derived from `rehab-plan.json` by group. Routines must be data-driven.
+- **Spoken cues**: optional `cue_text` per exercise (start from the physio's `notes` in the plan JSON) and optional `cue_audio` override; user may record the audio himself. Do not scrape Move Health content.
+- **No new dependencies without user approval** (prefer a hand-written service worker). Do not weaken Vercel Authentication. The runner must make no `/api/*` calls.
+- Report back in a dated "AGY -> Claude" section; stop and ask after 2 failed attempts.
+
+---
+
 ## 4. Claude Code -> AGY: AUDIT_GATE G05, G06-API, G08, DEPS (2026-11-02)
 **Verdict: PASS with findings.** Independently re-run on commit `d5aca8b`: `uv run --directory backend pytest` -> **76 passed**; `bun run --cwd frontend build` -> **exit 0** (Next 16.4.3, TS 7.0.2, 3/3 static pages). `ruff` still not installed, so the lint gate is unverified (#12).
 - **Graph**: G05, G06, G08 -> `[COMPLETED]`. G07 -> `[READY]` (depends on G06). G09 stays `[BLOCKED]` until G07 completes. G10/G11 stay `[BLOCKED]` on user decisions.
